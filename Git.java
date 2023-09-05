@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,8 +43,22 @@ public class Git{
         String contents = readFile(fileName);
         writeFile (contents, Sha1(contents));
     }
+    public static void initialize() throws IOException
+    {
+        if (!(new File ("index").isFile()))
+        {
+            File index = new File("index");
+            index.createNewFile();
+        }
+        if (!(new File ("objects").isDirectory()))
+        {
+            File objects = new File("objects");
+            objects.mkdir();
+        }
+    }
     public static void main(String[] args) throws IOException {
         System.out.println(Sha1("1010"));
         convertToBlob("doesn'tmatter.txt");
+        initialize();
     }
 }
