@@ -1,12 +1,14 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Git{
+public class Blob{
     public static String Sha1(String input)
     {
         try {
@@ -38,10 +40,25 @@ public class Git{
         fr.close();
         return s.toString();
     }
-    public static void convertToBlob (String fileName) throws IOException
+    public Blob (String fileName) throws IOException
     {
         String contents = readFile(fileName);
-        writeFile (contents, Sha1(contents));
+        File f = new File ("/Users/markma/Documents/Honors topics/Git/objects/"+Sha1(contents));
+        f.createNewFile();
+        FileWriter fw = new FileWriter (f);
+        fw.write(contents);
+        fw.close();
+        // BufferedWriter writer = new BufferedWriter(f);
+        // writer.append("poop");
+        // writeFile (contents, Sha1(contents));
+        // File objects = new File("objects");
+        //     objects.mkdir();
+        // File file = new File (objects, fileName);
+    }
+    public static String toSha1 (String fileName) throws IOException
+    {
+        String contents = readFile(fileName);
+        return Sha1(contents);
     }
     public static void initialize() throws IOException
     {
@@ -57,8 +74,9 @@ public class Git{
         }
     }
     public static void main(String[] args) throws IOException {
-        System.out.println(Sha1("1010"));
-        convertToBlob("doesn'tmatter.txt");
+        System.out.println(Sha1("10101"));
+        // convertToBlob("doesn'tmatter.txt");
+        System.out.println(toSha1("doesn'tmatter.txt"));
         initialize();
     }
 }
