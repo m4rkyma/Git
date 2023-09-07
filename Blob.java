@@ -60,23 +60,14 @@ public class Blob{
         String contents = readFile(fileName);
         return Sha1(contents);
     }
-    public static void initialize() throws IOException
+    public static String getContents (String fileName) throws IOException
     {
-        if (!(new File ("index").isFile()))
-        {
-            File index = new File("index");
-            index.createNewFile();
-        }
-        if (!(new File ("objects").isDirectory()))
-        {
-            File objects = new File("objects");
-            objects.mkdir();
-        }
+        String contents = readFile(fileName);
+        return contents;
     }
     public static void main(String[] args) throws IOException {
         System.out.println(Sha1("10101"));
         // convertToBlob("doesn'tmatter.txt");
         System.out.println(toSha1("doesn'tmatter.txt"));
-        initialize();
     }
 }
