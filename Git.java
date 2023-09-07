@@ -13,7 +13,9 @@ public class Git{
         else
         {
             File index = new File("index");
-            index.createNewFile(); 
+            FileWriter fw = new FileWriter ("index");
+            fw.flush();
+            fw.close();
         }
         if (!(new File ("objects").isDirectory()))
         {
@@ -45,5 +47,6 @@ public class Git{
         String s = Blob.Sha1(Blob.getContents(fileName));
         File f = new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s);
         f.delete();
+
     }
 }
