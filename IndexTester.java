@@ -8,5 +8,6 @@ public class IndexTester{
 
         git.add("a.txt");
         git.add("b.txt");
+        git.remove ("a.txt");
     }
 }
