@@ -1,11 +1,16 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public class Git{
-    public HashMap <String, String> blobList = new HashMap<>();
+    // public HashMap <String, String> blobList = new HashMap<>();
     public void initialize() throws IOException
     {
         if (!(new File ("index").isFile()))
@@ -13,18 +18,21 @@ public class Git{
             File index = new File("index");
             index.createNewFile(); 
         }
-        else
-        {
-            File index = new File("index");
-            FileWriter fw = new FileWriter ("index");
-            fw.flush();
-            fw.close();
-        }
+        // else
+        // {
+        //     File index = new File("index");
+        //     FileWriter fw = new FileWriter ("index");
+        //     fw.flush();
+        //     fw.close();
+        // }
         if (!(new File ("objects").isDirectory()))
         {
             File objects = new File("objects");
             objects.mkdir();
         }
+    }
+    public static String readFile(String from) throws IOException {
+        return Files.readString(Path.of(from));
     }
     public void add (String fileName) throws IOException
     {
@@ -33,17 +41,23 @@ public class Git{
         {
             return;
         }
-        if (blobList.containsKey(fileName))
-        {
-            return;
-        }
         System.out.println ("added " + fileName);
         Blob blob = new Blob (fileName);
-        // FileWriter fw = new FileWriter ("index",true);
-        // fw.write(fileName + " : " + Blob.Sha1(Blob.getContents(fileName)) + "\n");
-        // fw.close();
-        blobList.put(fileName, Blob.Sha1(Blob.getContents(fileName)));
-        writeIndex();
+        // File f = new File (fileName);
+
+        FileWriter fw = new FileWriter ("index",true);
+        // PrintWriter pw = new PrintWriter (fw);
+        // if (!readFile("index").contains(s)) {
+        //     if (readFile("index").isEmpty())
+        //         pw.print(f.getName() + " : " + s);
+        //     else
+        //         pw.print("\n" + f.getName() + " : " + s);
+        // }
+        fw.write(fileName + " : " + Blob.Sha1(Blob.getContents(fileName)) + "\n");
+        fw.close();
+        // pw.close();
+        // blobList.put(fileName, Blob.Sha1(Blob.getContents(fileName)));
+        // writeIndex();
         // File index = new File("index");
         // index.createNewFile();
         // if (new File ("index").isFile())
@@ -60,20 +74,25 @@ public class Git{
     public void remove (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
-        File f = new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s);
-        f.delete();
-        blobList.remove(fileName, Blob.Sha1(Blob.getContents(fileName)));
-        writeIndex();
-    }
-    public void writeIndex() throws IOException
-    {
-        FileWriter fw = new FileWriter ("index", true);
-        PrintWriter pw = new PrintWriter (fw);
-        for (String file : blobList.keySet())
+        File bruh = new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s);
+        if (bruh.exists())
         {
-            pw.write (file + " : " + blobList.get(file) + "\n");
+            bruh.delete();
         }
-        fw.close();
-        pw.close();
-    }
+        File f = new File ("index");
+        File temp = new File ("temp.txt");
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
+        String lineToRemove = fileName + " : " + Blob.Sha1(Blob.getContents(fileName));
+        String currentLine;
+
+        while((currentLine = br.readLine()) != null) {
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(lineToRemove)) continue;
+                bw.write(currentLine + System.getProperty("line.separator"));
+        }
+        bw.close();
+        br.close();
+        temp.renameTo(f);
+}
 }
