@@ -37,7 +37,7 @@ public class Git{
     public void add (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
-        if (new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s).exists())
+        if (new File ("objects/" + s).exists())
         {
             return;
         }
@@ -74,7 +74,7 @@ public class Git{
     public void remove (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
-        File bruh = new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s);
+        File bruh = new File ("objects/" + s);
         if (bruh.exists())
         {
             bruh.delete();
