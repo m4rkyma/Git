@@ -101,5 +101,49 @@
                 ]
             }
         ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "lineInput"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "lineToRemove"
+                ]
+            },
+            {
+                "methodName": "getContents",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "printSB",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "writeToObjects",
+                "parameters": [],
+                "values": []
+            }
+        ]
     }
 ]

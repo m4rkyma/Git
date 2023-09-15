@@ -71,7 +71,7 @@ public class Tree {
         fileToDelete.delete();
         sb = new StringBuilder(sb.toString().stripTrailing());
     }
-
+    // Made this for JUnit Tester
     public static String printSB() {
         return sb.toString();
     }
