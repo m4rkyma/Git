@@ -34,7 +34,7 @@ public class Git{
     public static String readFile(String from) throws IOException {
         return Files.readString(Path.of(from));
     }
-    public void add (String fileName) throws IOException
+    public static void add (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
         if (new File ("objects/" + s).exists())
