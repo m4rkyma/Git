@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -40,15 +41,24 @@ public class GitTest {
             fw.write(fileContent); // Writes the string to test.txt
         }
 
-        // Call the readFile method to read the content
         String readContent = Git.readFile("test.txt"); // Reads through test.txt
 
-        // Check if the content matches what we wrote
         assertEquals(fileContent, readContent); // Compares the 2 Strings
     }
 
     @Test
-    void testRemove() {
+    void testRemove() throws IOException {
+        File testFile = new File("test.txt");
+        testFile.createNewFile();
 
+        // Call add method on test.txt
+        Git.add("test.txt");
+
+        // Call remove method on test.txt
+        Git.remove("test.txt");
+
+        // Check if index has been correctly updated after calling remove on test.txt
+        String indexContents = Git.readFile("index");
+        assertFalse(indexContents.contains("test.txt"));
     }
 }

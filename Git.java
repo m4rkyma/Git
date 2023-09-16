@@ -71,7 +71,7 @@ public class Git{
         //     System.out.println ("poop");
         // }
     }
-    public void remove (String fileName) throws IOException
+    public static void remove (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
         File bruh = new File ("objects/" + s);
