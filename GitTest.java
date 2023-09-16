@@ -1,6 +1,8 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
@@ -31,8 +33,18 @@ public class GitTest {
     }
 
     @Test
-    void testReadFile() {
+    void testReadFile() throws IOException {
+        File testFile = new File("test.txt");
+        String fileContent = "abcdefg"; // Makes a String for what we want to be inside of test.txt
+        try (FileWriter fw = new FileWriter(testFile)) {
+            fw.write(fileContent); // Writes the string to test.txt
+        }
 
+        // Call the readFile method to read the content
+        String readContent = Git.readFile("test.txt"); // Reads through test.txt
+
+        // Check if the content matches what we wrote
+        assertEquals(fileContent, readContent); // Compares the 2 Strings
     }
 
     @Test
