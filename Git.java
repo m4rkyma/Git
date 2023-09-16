@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class Git{
     // public HashMap <String, String> blobList = new HashMap<>();
-    public void initialize() throws IOException
+    public static void initialize() throws IOException
     {
         if (!(new File ("index").isFile()))
         {

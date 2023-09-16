@@ -11,17 +11,23 @@ public class GitTest {
         File testFile = new File("test.txt");
         testFile.createNewFile();
 
-        // Call the add method
+        // Call add method
         Git.add("test.txt");
 
-        // Check if 'index' file was updated
+        // Checks to see if index file has the text from test.txt inside it
         String indexContents = Git.readFile("index");
         assertTrue(indexContents.contains("test.txt"));
     }
 
     @Test
-    void testInitialize() {
+    void testInitialize() throws IOException {
 
+        // Call init method
+        Git.initialize();
+
+        // Checks if index  and objects were created
+        assertTrue(new File("index").isFile());
+        assertTrue(new File("objects").isDirectory());
     }
 
     @Test
