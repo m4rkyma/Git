@@ -59,6 +59,6 @@ public class GitTest {
 
         // Check if index has been correctly updated after calling remove on test.txt
         String indexContents = Git.readFile("index");
-        assertFalse(indexContents.contains("test.txt"));
+        assertTrue(!indexContents.contains("test.txt"));
     }
 }
