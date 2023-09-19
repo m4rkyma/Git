@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class Git{
     // public HashMap <String, String> blobList = new HashMap<>();
-    public void initialize() throws IOException
+    public static void initialize() throws IOException
     {
         if (!(new File ("index").isFile()))
         {
@@ -34,10 +34,10 @@ public class Git{
     public static String readFile(String from) throws IOException {
         return Files.readString(Path.of(from));
     }
-    public void add (String fileName) throws IOException
+    public static void add (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
-        if (new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s).exists())
+        if (new File ("objects/" + s).exists())
         {
             return;
         }
@@ -71,10 +71,10 @@ public class Git{
         //     System.out.println ("poop");
         // }
     }
-    public void remove (String fileName) throws IOException
+    public static void remove (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
-        File bruh = new File ("/Users/markma/Documents/Honors topics/Git/objects/" + s);
+        File bruh = new File ("objects/" + s);
         if (bruh.exists())
         {
             bruh.delete();

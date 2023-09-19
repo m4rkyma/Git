@@ -43,7 +43,7 @@ public class Blob{
     public Blob (String fileName) throws IOException
     {
         String contents = readFile(fileName);
-        File f = new File ("/Users/markma/Documents/Honors topics/Git/objects/"+Sha1(contents));
+        File f = new File ("objects/"+Sha1(contents));
         f.createNewFile();
         FileWriter fw = new FileWriter (f);
         fw.write(contents);

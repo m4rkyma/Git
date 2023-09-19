@@ -1,0 +1,149 @@
+[
+    {
+        "className": "Git",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initialize",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            },
+            {
+                "methodName": "readFile",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file"
+                ]
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "sha1",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "input"
+                ]
+            },
+            {
+                "methodName": "writeFile",
+                "parameters": [
+                    "String", "String"
+                ],
+                "values": [
+                    "str", "file"
+                ]
+            },
+            {
+                "methodName": "readFile",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file"
+                ]
+            },
+            {
+                "methodName": "toSha1",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file"
+                ]
+            },
+            {
+                "methodName": "getContents",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file"
+                ]
+            }
+        ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "lineInput"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "lineToRemove"
+                ]
+            },
+            {
+                "methodName": "getContents",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "printSB",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "writeToObjects",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    }
+]
