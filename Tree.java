@@ -71,6 +71,12 @@ public class Tree {
         fileToDelete.delete();
         sb = new StringBuilder(sb.toString().stripTrailing());
     }
+
+    public String getSha()
+    {
+        return Blob.Sha1(sb.toString());
+    }
+
     // Made this for JUnit Tester
     public static String printSB() {
         return sb.toString();
