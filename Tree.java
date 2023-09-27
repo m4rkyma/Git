@@ -94,4 +94,38 @@ public class Tree {
             fw.close();
         }
     }
+    public String addDirectory (String directoryPath) throws IOException
+    {
+        File f = new File (directoryPath);
+        // Tree childTree = new Tree();
+        String [] arr = f.list();
+        if (arr != null)
+        {
+            for (String fileName : arr)
+        {
+            // Blob b = new Blob (directoryPath + "/"+arr[i].getName());
+            File a = new File (directoryPath+"/"+fileName);
+            if (a.isFile())
+            {
+                String hash = Blob.toSha1(a.getAbsolutePath());
+                String name = "/"+directoryPath + "/"+fileName;
+                add("blob : " + hash + " : " + name);
+            }
+            else
+            {
+                Tree childTree = new Tree();
+                String subsha1 = childTree.addDirectory(directoryPath+"/"+fileName);
+                add ("tree : " + subsha1 + " : " + fileName);
+            }
+        }
+        }
+        return (getSha());
+    }
+    public static void main(String[] args) throws IOException {
+        Tree t= new Tree ();
+        t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
+        t.addDirectory ("blu");
+        getContents();
+        writeToObjects();
+    }
 }

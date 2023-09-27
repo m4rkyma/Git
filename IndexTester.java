@@ -6,6 +6,7 @@ public class IndexTester{
         Git git = new Git();
         git.initialize();
 
+<<<<<<< Updated upstream
         // git.add("b.txt");
         //git.add("a.txt");
         //git.remove ("a.txt");
@@ -17,6 +18,15 @@ public class IndexTester{
         Tree.getContents();
         Tree.printSB();
         Tree.writeToObjects();
+=======
+        git.add("a.txt");
+        git.add("b.txt");
+        // git.add("c.txt");
+>>>>>>> Stashed changes
 
+        git.remove ("a.txt");
+        // git.remove("b.txt");
+        // git.remove("c.txt");
+        git.add("c.txt");
     }
 }
