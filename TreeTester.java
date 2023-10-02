@@ -116,10 +116,51 @@ public class TreeTester {
         t.addDirectory("dir1");
         Tree.getContents();
         Tree.writeToObjects();
-        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8"));
-        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98"));
-        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4"));
-        // assertTrue(Tree.printSB().contains("tree :"));
+        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
+        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
+        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
+    }
+    @Test
+    void testaddDirectoryAdvanced() throws IOException
+    {
+        //testcase 1
+        File dir1 = new File ("dir1");
+        dir1.mkdir();
+        File a = new File ("dir1/a.txt");
+        a.createNewFile();
+        PrintWriter pw = new PrintWriter (a);
+        pw.write("a");
+        pw.close();
+        File b = new File ("dir1/b.txt");
+        b.createNewFile();
+        PrintWriter p = new PrintWriter (b);
+        p.write("b");
+        p.close();
+        File c = new File ("dir1/c.txt");
+        c.createNewFile();
+        PrintWriter l = new PrintWriter (c);
+        l.write("c");
+        l.close();
 
+        File d = new File ("dir1/d");
+        d.mkdir();
+        File e = new File ("dir1/e");
+        e.mkdir();
+
+        File f = new File ("dir1/d/f.txt");
+        f.createNewFile();
+        PrintWriter bruh = new PrintWriter (f);
+        bruh.write("f");
+        bruh.close();
+
+        Tree t = new Tree ();
+        t.addDirectory("dir1");
+        Tree.getContents();
+        Tree.writeToObjects();
+        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
+        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
+        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
+        assertTrue(Tree.printSB().contains("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        assertTrue(Tree.printSB().contains("blob : 4a0a19218e082a343a1b17e5333409af9d98f0f5 : /dir1/d/f.txt"));
     }
 }
