@@ -19,9 +19,9 @@ public class CommitTest {
 
         Path location = Paths.get("objects/" + github.getSha());
 
-        String correctFill = ""
+        String correctFill = "";
 
-        assertTrue("File contents do not match", correctFill.equals(Files.toString(location)));
+        assertTrue("File contents do not match", correctFill.equals(location.toString()));
     }
 
     @Test

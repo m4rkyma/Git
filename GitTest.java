@@ -13,9 +13,9 @@ public class GitTest {
     void testAdd() throws IOException {
         File testFile = new File("test.txt");
         testFile.createNewFile();
-
+        Git g = new Git ();
         // Call add method
-        Git.add("test.txt");
+        g.add("test.txt");
 
         // Checks to see if index file has the text from test.txt inside it
         String indexContents = Git.readFile("index");

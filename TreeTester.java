@@ -91,4 +91,35 @@ public class TreeTester {
         Tree.sb = new StringBuilder();
         objectsFile.delete();
     }
+    @Test
+    void testaddDirectoryBasic() throws IOException
+    {
+        //testcase 1
+        File dir1 = new File ("dir1");
+        dir1.mkdir();
+        File a = new File ("dir1/a.txt");
+        a.createNewFile();
+        PrintWriter pw = new PrintWriter (a);
+        pw.write("a");
+        pw.close();
+        File b = new File ("dir1/b.txt");
+        b.createNewFile();
+        PrintWriter p = new PrintWriter (b);
+        p.write("b");
+        p.close();
+        File c = new File ("dir1/c.txt");
+        c.createNewFile();
+        PrintWriter l = new PrintWriter (c);
+        l.write("c");
+        l.close();
+        Tree t = new Tree ();
+        t.addDirectory("dir1");
+        Tree.getContents();
+        Tree.writeToObjects();
+        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8"));
+        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98"));
+        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4"));
+        // assertTrue(Tree.printSB().contains("tree :"));
+
+    }
 }
