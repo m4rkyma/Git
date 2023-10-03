@@ -64,6 +64,8 @@ public class Tree {
         }
         for (int i = 0; i < tree.size(); i++) {
             String line = "tree : " + tree.get(i);
+            // File file = new File (tree.get(i));
+            // String line = "tree : " + file.getSha();
             sb.append(line);
             sb.append("\n");
         }
@@ -97,8 +99,16 @@ public class Tree {
     public String addDirectory (String directoryPath) throws IOException
     {
         File f = new File (directoryPath);
+        if (f.isFile())
+        {
+            Git.addFile(directoryPath);
+            // add ("blob : " + f.getSha());
+        }
         // Tree childTree = new Tree();
         String [] arr = f.list();
+        if (arr == null) {
+            return null; // Handle non-existent directories
+        }
         if (arr != null)
         {
             for (String fileName : arr)
@@ -111,11 +121,15 @@ public class Tree {
                 String name = "/"+directoryPath + "/"+fileName;
                 add("blob : " + hash + " : " + name);
             }
-            else
+            else if (a.isDirectory())
             {
                 Tree childTree = new Tree();
                 String subsha1 = childTree.addDirectory(directoryPath+"/"+fileName);
-                add ("tree : " + subsha1 + " : " + fileName);
+                if (subsha1 != null)
+                {
+                    add ("tree : " + subsha1 + " : " + fileName);
+                }
+                // add ("tree : " + subsha1 + " : " + fileName);
             }
         }
         }

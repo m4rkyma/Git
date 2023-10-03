@@ -15,7 +15,7 @@ public class GitTest {
         testFile.createNewFile();
         Git g = new Git ();
         // Call add method
-        g.add("test.txt");
+        g.addFile("test.txt");
 
         // Checks to see if index file has the text from test.txt inside it
         String indexContents = Git.readFile("index");
@@ -52,7 +52,7 @@ public class GitTest {
         testFile.createNewFile();
 
         // Call add method on test.txt
-        Git.add("test.txt");
+        Git.addFile("test.txt");
 
         // Call remove method on test.txt
         Git.remove("test.txt");

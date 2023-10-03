@@ -89,4 +89,8 @@ public class Commit {
         reader.close();
         newFile.renameTo(orginalFile);
     }
+    public void getCommit()
+    {
+        
+    }
 }

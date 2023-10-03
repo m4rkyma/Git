@@ -18,13 +18,6 @@ public class Git{
             File index = new File("index");
             index.createNewFile(); 
         }
-        // else
-        // {
-        //     File index = new File("index");
-        //     FileWriter fw = new FileWriter ("index");
-        //     fw.flush();
-        //     fw.close();
-        // }
         if (!(new File ("objects").isDirectory()))
         {
             File objects = new File("objects");
@@ -34,7 +27,7 @@ public class Git{
     public static String readFile(String from) throws IOException {
         return Files.readString(Path.of(from));
     }
-    public static void add (String fileName) throws IOException
+    public static void addFile (String fileName) throws IOException
     {
         String s = Blob.Sha1(Blob.getContents(fileName));
         if (new File ("objects/" + s).exists())
@@ -43,33 +36,22 @@ public class Git{
         }
         System.out.println ("added " + fileName);
         Blob blob = new Blob (fileName);
-        // File f = new File (fileName);
-
         FileWriter fw = new FileWriter ("index",true);
-        // PrintWriter pw = new PrintWriter (fw);
-        // if (!readFile("index").contains(s)) {
-        //     if (readFile("index").isEmpty())
-        //         pw.print(f.getName() + " : " + s);
-        //     else
-        //         pw.print("\n" + f.getName() + " : " + s);
-        // }
-        fw.write(fileName + " : " + Blob.Sha1(Blob.getContents(fileName)) + "\n");
+        fw.write("blob : " + Blob.Sha1(Blob.getContents(fileName)) + " : " + fileName + "\n");
         fw.close();
-        // pw.close();
-        // blobList.put(fileName, Blob.Sha1(Blob.getContents(fileName)));
-        // writeIndex();
-        // File index = new File("index");
-        // index.createNewFile();
-        // if (new File ("index").isFile())
+    }
+    public static void addTree (String fileName) throws IOException
+    {
+        Tree t = new Tree ();
+
+        // if (new File ("objects/" + s).exists())
         // {
-        //     FileWriter fw = new FileWriter ("index",true);
-        //     fw.write(fileName + " : " + Blob.Sha1(Blob.getContents(fileName)) + "\n");
-        //     fw.close();
+        //     return;
         // }
-        // else
-        // {
-        //     System.out.println ("poop");
-        // }
+        System.out.println ("added " + fileName);
+        FileWriter fw = new FileWriter ("index",true);
+        fw.write("tree : " + t.addDirectory(fileName) + " : " + fileName + "\n");
+        fw.close();
     }
     public static void remove (String fileName) throws IOException
     {
@@ -94,5 +76,11 @@ public class Git{
         bw.close();
         br.close();
         temp.renameTo(f);
+}
+public static void main(String[] args) throws IOException {
+    Git g = new Git ();
+    g.initialize();
+    g.addTree ("blu");
+
 }
 }
