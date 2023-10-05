@@ -125,6 +125,7 @@ public class Tree {
             {
                 Tree childTree = new Tree();
                 String subsha1 = childTree.addDirectory(directoryPath+"/"+fileName);
+                
                 if (subsha1 != null)
                 {
                     add ("tree : " + subsha1 + " : " + fileName);
