@@ -37,14 +37,16 @@ public class TreeTester {
     // Adds data to Tree and checks if it's correct
     @Test
     void testAddBlob() throws IOException {
-        Tree.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
+        Tree t = new Tree ();
+        t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
         assertTrue(Tree.hMap.containsKey("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
         assertEquals("file1.txt", Tree.hMap.get("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
     }
     // Adds data to tree and checks if it's correct
     @Test
     void testAddTree() throws IOException {
-        Tree.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
+        Tree t = new Tree ();
+        t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
         assertTrue(Tree.tree.contains("fa87e7501e7a09957de75317910a08559d45878f"));
     }
     // Removes data from tree and checks if correct
@@ -66,8 +68,9 @@ public class TreeTester {
     @Test
     void testGetContents() throws IOException {
         // Add data to Tree
-        Tree.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
-        Tree.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
+        Tree t = new Tree ();
+        t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
+        t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
 
         Tree.getContents();
         // Compares expected and receieved
@@ -80,8 +83,9 @@ public class TreeTester {
     // Copies over the contents and name to the objects folder
     @Test
     void testWriteToObjects() throws IOException {
-        Tree.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
-        Tree.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
+        Tree t = new Tree ();
+        t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
+        t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
 
         Tree.getContents();
         Tree.writeToObjects();

@@ -17,9 +17,11 @@ public class Tree {
     public Tree() throws IOException {
         File f = new File("tree");
         f.createNewFile();
+        this.tree = tree;
+
     }
 
-    public static void add(String line) throws IOException {
+    public void add(String line) throws IOException {
         if (line.substring(0, 4).equals("blob")) // checks if adding type: blob
         {
             Scanner sc = new Scanner(line);
@@ -125,7 +127,7 @@ public class Tree {
             {
                 Tree childTree = new Tree();
                 String subsha1 = childTree.addDirectory(directoryPath+"/"+fileName);
-                
+
                 if (subsha1 != null)
                 {
                     add ("tree : " + subsha1 + " : " + fileName);

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 public class Commit {
 
-    private String sha, author, desc, treeSha, prevCommitSha, nextSha;
+    private String author, desc, treeSha, prevCommitSha, nextSha;
 
     // This is to commit a file that has the previous sha
     public Commit(String prevCommitSha, String author, String desc) throws IOException {
@@ -24,11 +24,13 @@ public class Commit {
         treeSha = treeify();
         this.author = author;
         this.desc = desc;
-        if (prevCommitSha!= "")
-        {
-            String treeSha = getCommitTree(prevCommitSha);
-            
-        }
+        // if (prevCommitSha!= "")
+        // {
+        //     // String treeSha = getPrevCommitTree();
+        //     File f = new File (treeSha);
+        //     FileWriter fw = new FileWriter (f);
+        //     // fw.write ("tree : " + )
+        // }
     }
 
     // this is if you do not have the previous sha
@@ -47,6 +49,9 @@ public class Commit {
         {
             tree.add(line);
         }
+        if (prevCommitSha != ""){
+            tree.add(getPrevCommitTree());
+        }
         br.close();
         FileWriter fw = new FileWriter ("index");
         fw.write("");
@@ -64,7 +69,7 @@ public class Commit {
 
     // This is actually what saves the file into the object folder, the new commit
     public void push() throws IOException {
-        FileWriter write = new FileWriter(new File("objects/" + sha));
+        FileWriter write = new FileWriter(new File("objects/" + getSha()));
         write.write(treeSha + "\n" + prevCommitSha + "\n" + nextSha + "\n" + author + "\n" + getDate() + "\n" + desc);
         write.close();
     }
@@ -109,7 +114,7 @@ public class Commit {
         reader.close();
         newFile.renameTo(orginalFile);
     }
-    public String getCommitTree(String prevCommitSha) throws IOException
+    public String getPrevCommitTree() throws IOException
     {
         File f = new File (prevCommitSha);
         BufferedReader br = new BufferedReader(new FileReader(f));
