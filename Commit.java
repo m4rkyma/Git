@@ -49,7 +49,7 @@ public class Commit {
         {
             tree.add(line);
         }
-        if (prevCommitSha != ""){
+        if (prevCommitSha != "" && prevCommitSha != null){
             tree.add(getPrevCommitTree());
         }
         br.close();
@@ -121,5 +121,16 @@ public class Commit {
         String line = br.readLine();
         br.close();
         return line;
+    }
+    public String getTreeSha() {
+        return treeSha;
+    }
+    
+    public String getPrevCommitSha() {
+        return prevCommitSha;
+    }
+    
+    public String getNextSha() {
+        return nextSha;
     }
 }

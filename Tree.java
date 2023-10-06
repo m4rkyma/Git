@@ -148,6 +148,7 @@ public class Tree {
             }
         }
         }
+        // getContents();
         return (getSha());
     }
     public HashMap<String, String> getBlobEntries() {
