@@ -1,5 +1,1 @@
-<<<<<<< Updated upstream
-piwuhfbwepiugh
-=======
-a
->>>>>>> Stashed changes
+A

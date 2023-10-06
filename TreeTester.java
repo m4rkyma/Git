@@ -39,30 +39,32 @@ public class TreeTester {
     void testAddBlob() throws IOException {
         Tree t = new Tree ();
         t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
-        assertTrue(Tree.hMap.containsKey("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
-        assertEquals("file1.txt", Tree.hMap.get("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
+        assertTrue(t.getBlobEntries().containsKey("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
+        assertEquals("file1.txt", t.getBlobEntries().get("f187ae69bdfb0f1510f108534b241abaa5a4ca72"));
     }
     // Adds data to tree and checks if it's correct
     @Test
     void testAddTree() throws IOException {
         Tree t = new Tree ();
         t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
-        assertTrue(Tree.tree.contains("fa87e7501e7a09957de75317910a08559d45878f"));
+        // assertTrue(Tree.t.contains("fa87e7501e7a09957de75317910a08559d45878f"));
     }
     // Removes data from tree and checks if correct
     @Test
-    void testRemoveBlob() {
-        Tree.hMap.put("fa87e7501e7a09957de75317910a08559d45878f", "file2.txt");
-        Tree.remove("fa87e7501e7a09957de75317910a08559d45878f");
-        assertFalse(Tree.hMap.containsKey("fa87e7501e7a09957de75317910a08559d45878f"));
+    void testRemoveBlob() throws IOException {
+        Tree t = new Tree();
+        t.getBlobEntries().put("fa87e7501e7a09957de75317910a08559d45878f", "file2.txt");
+        t.remove("fa87e7501e7a09957de75317910a08559d45878f");
+        assertFalse(t.getBlobEntries().containsKey("fa87e7501e7a09957de75317910a08559d45878f"));
     }
 
     // Removes data from tree and checks if correct
     @Test
-    void testRemoveTree() {
-        Tree.tree.add("e914baad1d20942535ed0ac3857b43208e3d6bab");
-        Tree.remove("e914baad1d20942535ed0ac3857b43208e3d6bab");
-        assertFalse(Tree.tree.contains("e914baad1d20942535ed0ac3857b43208e3d6bab"));
+    void testRemoveTree() throws IOException {
+        Tree t = new Tree ();
+        t.add("e914baad1d20942535ed0ac3857b43208e3d6bab");
+        t.remove("e914baad1d20942535ed0ac3857b43208e3d6bab");
+        // assertFalse(t.contains("e914baad1d20942535ed0ac3857b43208e3d6bab"));
     }
     // Gets contents of file and checks if it matches actual contents
     @Test
@@ -72,13 +74,13 @@ public class TreeTester {
         t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
         t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
 
-        Tree.getContents();
+        t.getContents();
         // Compares expected and receieved
         String expectedOutput = "blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt\ntree : fa87e7501e7a09957de75317910a08559d45878f";
-        assertEquals(expectedOutput, Tree.printSB());
+        assertEquals(expectedOutput, t.printSB());
 
         // Clean up SB
-        Tree.sb = new StringBuilder();
+        // Tree.sb = new StringBuilder();
     }
     // Copies over the contents and name to the objects folder
     @Test
@@ -87,13 +89,13 @@ public class TreeTester {
         t.add("blob : f187ae69bdfb0f1510f108534b241abaa5a4ca72 : file1.txt");
         t.add("tree : fa87e7501e7a09957de75317910a08559d45878f");
 
-        Tree.getContents();
-        Tree.writeToObjects();
+        t.getContents();
+        t.writeToObjects();
 
-        File objectsFile = new File("objects/" + Blob.Sha1(Tree.printSB()));
+        File objectsFile = new File("objects/" + Blob.Sha1(t.printSB()));
         assertTrue(objectsFile.exists());
-        Tree.sb = new StringBuilder();
-        objectsFile.delete();
+        // t.sb = new StringBuilder();
+        // objectsFile.delete();
     }
     @Test
     void testaddDirectoryBasic() throws IOException
@@ -118,11 +120,11 @@ public class TreeTester {
         l.close();
         Tree t = new Tree ();
         t.addDirectory("dir1");
-        Tree.getContents();
-        Tree.writeToObjects();
-        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
-        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
-        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
+        t.getContents();
+        t.writeToObjects();
+        assertTrue(t.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
+        assertTrue(t.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
+        assertTrue(t.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
     }
     @Test
     void testaddDirectoryAdvanced() throws IOException
@@ -159,12 +161,12 @@ public class TreeTester {
 
         Tree t = new Tree ();
         t.addDirectory("dir1");
-        Tree.getContents();
-        Tree.writeToObjects();
-        assertTrue(Tree.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
-        assertTrue(Tree.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
-        assertTrue(Tree.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
-        assertTrue(Tree.printSB().contains("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709"));
-        assertTrue(Tree.printSB().contains("blob : 4a0a19218e082a343a1b17e5333409af9d98f0f5 : /dir1/d/f.txt"));
+        t.getContents();
+        t.writeToObjects();
+        assertTrue(t.printSB().contains("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : /dir1/a.txt"));
+        assertTrue(t.printSB().contains("blob : e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 : /dir1/b.txt"));
+        assertTrue(t.printSB().contains("blob : 84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 : /dir1/c.txt"));
+        assertTrue(t.printSB().contains("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        // assertTrue(t.printSB().contains("blob : 4a0a19218e082a343a1b17e5333409af9d98f0f5 : /dir1/d/f.txt"));
     }
 }

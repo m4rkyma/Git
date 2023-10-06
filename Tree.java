@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Tree {
-    static ArrayList<String> tree = new ArrayList<String>();
-    static HashMap<String, String> hMap = new HashMap<String, String>();
-    static StringBuilder sb = new StringBuilder();
+    private ArrayList<String> treeEntries;
+    private HashMap<String, String> blobEntries = new HashMap<String, String>();
+    private StringBuilder sb = new StringBuilder();
 
     public Tree() throws IOException {
-        File f = new File("tree");
-        f.createNewFile();
-        this.tree = tree;
-
+        // File f = new File("tree");
+        // f.createNewFile();
+        treeEntries = new ArrayList<>();
+        blobEntries = new HashMap<>();
     }
 
     public void add(String line) throws IOException {
@@ -31,7 +31,11 @@ public class Tree {
                     String type = line.split(" : ")[0]; // dummy variable so I can access hash and name
                     String hash = line.split(" : ")[1]; // gets the center of the line (hash)
                     String name = line.split(" : ")[2]; // gets the end of the line (fileName)
-                    hMap.put(hash, name); // adds to hashMap of blobs (Strings)
+                    if (!blobEntries.containsKey(name)) {
+                        blobEntries.put(hash, name);
+                        // Blob blob = new Blob (name);
+                    }
+                    // blobEntries.put(hash, name); // adds to hashMap of blobs (Strings)
                 }
             }
             sc.close(); // necessary close of Scanner (sc)
@@ -43,29 +47,32 @@ public class Tree {
                 if (!line.isEmpty()) {
                     String type = line.split(" : ")[0]; // dummy variable so I can access hash and name
                     String hash = line.split(" : ")[1]; // gets end of the line (hash)
-                    tree.add(hash); // adds the hash value to an ArrayList (tree)
+                    if (!treeEntries.contains(hash)) {
+                        treeEntries.add(hash);
+                    }
+                    // tree.add(hash); // adds the hash value to an ArrayList (tree)
                 }
             }
             k.close(); // necessary close of Scanner (k)
         }
     }
 
-    public static void remove(String remove) {
-        if (hMap.containsKey(remove) || hMap.containsValue(remove)) {
-            hMap.remove(remove);
-        } else if (tree.indexOf(remove) != -1) {
-            tree.remove(remove);
+    public void remove(String remove) {
+        if (blobEntries.containsKey(remove) || blobEntries.containsValue(remove)) {
+            blobEntries.remove(remove);
+        } else if (treeEntries.indexOf(remove) != -1) {
+            treeEntries.remove(remove);
         }
     }
 
-    public static void getContents() throws IOException {
-        for (Map.Entry<String, String> k : hMap.entrySet()) {
+    public void getContents() throws IOException {
+        for (Map.Entry<String, String> k : blobEntries.entrySet()) {
             String line = "blob : " + k.getKey() + " : " + k.getValue();
             sb.append(line);
             sb.append("\n");
         }
-        for (int i = 0; i < tree.size(); i++) {
-            String line = "tree : " + tree.get(i);
+        for (int i = 0; i < treeEntries.size(); i++) {
+            String line = "tree : " + treeEntries.get(i);
             // File file = new File (tree.get(i));
             // String line = "tree : " + file.getSha();
             sb.append(line);
@@ -82,11 +89,11 @@ public class Tree {
     }
 
     // Made this for JUnit Tester
-    public static String printSB() {
+    public String printSB() {
         return sb.toString();
     }
 
-    public static void writeToObjects() throws IOException {
+    public void writeToObjects() throws IOException {
         File shaName = new File("objects/" + Blob.Sha1(sb.toString()));
         if (!shaName.exists()) {
             shaName.createNewFile();
@@ -100,13 +107,25 @@ public class Tree {
     }
     public String addDirectory (String directoryPath) throws IOException
     {
+        // File dir = new File(directoryPath);
+        // // if (!dir.isDirectory()) {
+        // //     throw new Exception("Not a directory");
+        // // }
+        // File[] files = dir.listFiles();
+
+        // Tree tree = new Tree();
+
+        // for (File file : files) {
+        //     if (file.isDirectory()) {
+        //         Tree childTree = new Tree();
+        //         tree.add ("tree : " + childTree.addDirectory(file.getPath()) + " : " + file.getName());
+        //     } else {
+        //         Blob blob = new Blob(file.getPath());
+        //         tree.add("blob : " + Blob.toSha1(file.getPath()) + " : " + file.getName());
+        //     }
+        // }
+        // return tree.getSha();
         File f = new File (directoryPath);
-        if (f.isFile())
-        {
-            Git.addFile(directoryPath);
-            // add ("blob : " + f.getSha());
-        }
-        // Tree childTree = new Tree();
         String [] arr = f.list();
         if (arr == null) {
             return null; // Handle non-existent directories
@@ -115,34 +134,34 @@ public class Tree {
         {
             for (String fileName : arr)
         {
-            // Blob b = new Blob (directoryPath + "/"+arr[i].getName());
             File a = new File (directoryPath+"/"+fileName);
             if (a.isFile())
             {
-                String hash = Blob.toSha1(a.getAbsolutePath());
+                Blob blob = new Blob (directoryPath+"/"+fileName);
                 String name = "/"+directoryPath + "/"+fileName;
-                add("blob : " + hash + " : " + name);
+                add("blob : " + Blob.toSha1(directoryPath+"/"+fileName) + " : " + name);
             }
             else if (a.isDirectory())
             {
                 Tree childTree = new Tree();
-                String subsha1 = childTree.addDirectory(directoryPath+"/"+fileName);
-
-                if (subsha1 != null)
-                {
-                    add ("tree : " + subsha1 + " : " + fileName);
-                }
-                // add ("tree : " + subsha1 + " : " + fileName);
+                add ("tree : " + childTree.addDirectory(directoryPath+"/"+fileName) + " : " + fileName);
             }
         }
         }
         return (getSha());
     }
+    public HashMap<String, String> getBlobEntries() {
+        return blobEntries;
+    }
+    
+    public ArrayList<String> getTreeEntries() {
+        return treeEntries;
+    }
     public static void main(String[] args) throws IOException {
         Tree t= new Tree ();
-        t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
-        t.addDirectory ("blu");
-        getContents();
-        writeToObjects();
+        // t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
+        t.addDirectory ("blu2");
+        t.getContents();
+        t.writeToObjects();
     }
 }

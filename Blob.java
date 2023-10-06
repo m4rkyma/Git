@@ -48,12 +48,6 @@ public class Blob{
         FileWriter fw = new FileWriter (f);
         fw.write(contents);
         fw.close();
-        // BufferedWriter writer = new BufferedWriter(f);
-        // writer.append("poop");
-        // writeFile (contents, Sha1(contents));
-        // File objects = new File("objects");
-        //     objects.mkdir();
-        // File file = new File (objects, fileName);
     }
     public static String toSha1 (String fileName) throws IOException
     {
@@ -66,8 +60,9 @@ public class Blob{
         return contents;
     }
     public static void main(String[] args) throws IOException {
-        System.out.println(Sha1("10101"));
+        // System.out.println(Sha1("10101"));
         // convertToBlob("doesn'tmatter.txt");
-        System.out.println(toSha1("doesn'tmatter.txt"));
+        // System.out.println(toSha1("doesn'tmatter.txt"));
+        Blob blob = new Blob ("a.txt");
     }
 }

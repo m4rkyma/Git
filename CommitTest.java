@@ -25,13 +25,13 @@ public class CommitTest {
     }
     @Test
     void testOneCommit() throws IOException {
-        Commit github = new Commit("","kevin", "cool file");
-        
+        Commit a = new Commit("","kevin", "1 cool file");
+        assertTrue (a.getPrevCommitTree() == null);
     }
     @Test
     void testTwoCommits() throws IOException {
-        Commit github = new Commit("","kevin", "cool file");
-        
+        Commit a = new Commit("","kevin", "1 cool file");
+        Commit b = new Commit(a.getSha(),"mark", "2 cool file");
     }
 
     @Test
