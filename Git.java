@@ -67,20 +67,35 @@ public class Git{
         BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
         String lineToRemove = fileName + " : " + Blob.Sha1(Blob.getContents(fileName));
         String currentLine;
-
+        boolean deleted = false;
         while((currentLine = br.readLine()) != null) {
             String trimmedLine = currentLine.trim();
             if(trimmedLine.equals(lineToRemove)) continue;
                 bw.write(currentLine + System.getProperty("line.separator"));
+                deleted = true;
         }
         bw.close();
         br.close();
         temp.renameTo(f);
-}
+        if (deleted)
+        {
+            FileWriter fw = new FileWriter (f,true);
+            fw.write("*deleted*"+fileName+ "\n");
+            fw.close();
+        }
+    }
+    public void editFile(String fileName) throws IOException
+    {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("index", true));
+        bw.write("*edited* : " + fileName);  
+        bw.close();
+    }
 public static void main(String[] args) throws IOException {
     Git g = new Git ();
     g.initialize();
-    g.addTree ("blu");
+    g.addFile ("a.txt");
+    // g.remove("a.txt");
+    // g.addTree ("blu");
 
 }
 }

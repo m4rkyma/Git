@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Tree {
-    private ArrayList<String> treeEntries;
+    private ArrayList<String> treeEntries, deletedFiles, editedFiles;
     private HashMap<String, String> blobEntries = new HashMap<String, String>();
     private StringBuilder sb = new StringBuilder();
 
@@ -60,8 +60,10 @@ public class Tree {
     public void remove(String remove) {
         if (blobEntries.containsKey(remove) || blobEntries.containsValue(remove)) {
             blobEntries.remove(remove);
+            deletedFiles.add(remove);
         } else if (treeEntries.indexOf(remove) != -1) {
             treeEntries.remove(remove);
+            deletedFiles.add(remove);
         }
     }
 
@@ -83,8 +85,9 @@ public class Tree {
         sb = new StringBuilder(sb.toString().stripTrailing());
     }
 
-    public String getSha()
+    public String getSha() throws IOException
     {
+        // getContents();
         return Blob.Sha1(sb.toString());
     }
 
@@ -149,6 +152,7 @@ public class Tree {
         }
         }
         // getContents();
+
         return (getSha());
     }
     public HashMap<String, String> getBlobEntries() {

@@ -116,7 +116,7 @@ public class Commit {
     }
     public String getPrevCommitTree() throws IOException
     {
-        File f = new File (prevCommitSha);
+        File f = new File ("objects/" + prevCommitSha);
         BufferedReader br = new BufferedReader(new FileReader(f));
         String line = br.readLine();
         br.close();
@@ -132,5 +132,17 @@ public class Commit {
     
     public String getNextSha() {
         return nextSha;
+    }
+    public static void main(String[] args) throws IOException {
+        Git.initialize();
+        Git.addFile("a.txt");
+        Commit c = new Commit ("","mark","poo");
+        c.push();
+        System.out.println (c.getSha());
+        Commit d = new Commit (c.getSha(),"mark","poo");
+        d.push();
+        Commit e = new Commit (d.getSha(),"mark","poo");
+        e.push();
+
     }
 }
