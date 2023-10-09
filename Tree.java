@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -162,10 +163,34 @@ public class Tree {
     public ArrayList<String> getTreeEntries() {
         return treeEntries;
     }
+    // public String searchTree (String tree, String) throws IOException
+    {
+        // Tree current = this;
+        // while (current != null)
+        // {
+        //     File f = new File ("HEAD");
+        //     BufferedReader fr = new BufferedReader(new FileReader(f));
+        //     String curCommit = fr.readLine();
+
+        // }
+
+    }
+    public String delete (String fileName) throws IOException
+    {
+        //gets tree of latest commit
+        File f = new File ("HEAD");
+        BufferedReader fr = new BufferedReader(new FileReader(f));
+        String curCommit = fr.readLine();
+        fr.close();
+        File c = new File ("objects/" + curCommit);
+        BufferedReader r = new BufferedReader(new FileReader(c));
+        String s = ("blob : " + "");
+        return (r.readLine());
+    }
     public static void main(String[] args) throws IOException {
         Tree t= new Tree ();
-        // t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
-        t.addDirectory ("blu2");
+        t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
+        // t.addDirectory ("blu2");
         t.getContents();
         t.writeToObjects();
     }

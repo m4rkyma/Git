@@ -77,17 +77,23 @@ public class Git{
         bw.close();
         br.close();
         temp.renameTo(f);
-        if (deleted)
-        {
-            FileWriter fw = new FileWriter (f,true);
-            fw.write("*deleted*"+fileName+ "\n");
-            fw.close();
-        }
+        // if (deleted)
+        // {
+        //     FileWriter fw = new FileWriter (f,true);
+        //     fw.write("*deleted*"+fileName+ "\n");
+        //     fw.close();
+        // }
     }
     public void editFile(String fileName) throws IOException
     {
         BufferedWriter bw = new BufferedWriter(new FileWriter("index", true));
         bw.write("*edited* : " + fileName);  
+        bw.close();
+    }
+    public void deleteFile(String fileName) throws IOException
+    {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("index", true));
+        bw.write("*deleted* : " + fileName);  
         bw.close();
     }
 public static void main(String[] args) throws IOException {

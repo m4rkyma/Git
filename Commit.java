@@ -53,6 +53,8 @@ public class Commit {
             tree.add(getPrevCommitTree());
         }
         br.close();
+        tree.getContents();
+        tree.writeToObjects();
         FileWriter fw = new FileWriter ("index");
         fw.write("");
         fw.close();
@@ -133,15 +135,29 @@ public class Commit {
     public String getNextSha() {
         return nextSha;
     }
+    public void makeHead() throws IOException
+    {
+        File f = new File ("HEAD");
+        if (f.exists())
+        {
+            f.delete();
+        }
+        f.createNewFile();
+        FileWriter fw = new FileWriter (f);
+        fw.write(getSha());
+        fw.close();
+    }
     public static void main(String[] args) throws IOException {
         Git.initialize();
         Git.addFile("a.txt");
         Commit c = new Commit ("","mark","poo");
+        System.out.println(c.getTreeSha());
+        System.out.println(c.getTreeSha());
         c.push();
         System.out.println (c.getSha());
-        Commit d = new Commit (c.getSha(),"mark","poo");
+        Commit d = new Commit (c.getSha(),"mark2","poo2");
         d.push();
-        Commit e = new Commit (d.getSha(),"mark","poo");
+        Commit e = new Commit (d.getSha(),"mark3","poo3");
         e.push();
 
     }
