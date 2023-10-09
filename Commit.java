@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -71,9 +72,110 @@ public class Commit {
 
     // This is actually what saves the file into the object folder, the new commit
     public void push() throws IOException {
-        FileWriter write = new FileWriter(new File("objects/" + getSha()));
-        write.write(treeSha + "\n" + prevCommitSha + "\n" + nextSha + "\n" + author + "\n" + getDate() + "\n" + desc);
-        write.close();
+        // if (prevCommitSha != "" && prevCommitSha != null && prevCommitSha != "da39a3ee5e6b4b0d3255bfef95601890afd80709")
+        // {
+        //     File z = new File (prevCommitSha);
+        // }
+        // if (prevCommitSha != "" && prevCommitSha != null && prevCommitSha != "da39a3ee5e6b4b0d3255bfef95601890afd80709")
+        // {
+        //     // File f = new File (prevCommitSha);
+        //     File z = new File ("objects/"+prevCommitSha);
+        //     int lineNumber = 3;
+        //     BufferedReader reader = new BufferedReader(new FileReader(z));
+        //     StringBuilder content = new StringBuilder();
+        //     String line;
+
+        //     int currentLine = 1;
+        //     while ((line = reader.readLine()) != null) {
+        //         if (currentLine == lineNumber) {
+        //             content.append(getSha()).append("\n");
+        //         }
+        //         content.append(line).append("\n");
+        //         currentLine++;
+        //     }
+        //     reader.close();
+
+        //     FileWriter writer = new FileWriter(prevCommitSha);
+        //     writer.write(content.toString());
+        //     writer.close();
+        //     // BufferedReader br = new BufferedReader(new FileReader(f));
+        //     // FileWriter fw = new FileWriter (f);
+        //     // String curline;
+        //     // int cur = 0;
+        //     // while (br.readLine() != null)
+        //     // {
+        //     //     cur++;
+        //     //     if (cur == 3)
+        //     //     {
+        //     //         fw.write
+        //     //     }
+        //     // }
+        // }
+        // if (nextSha == null)
+        // {
+        //     nextSha = "";
+        // }
+        // FileWriter write = new FileWriter(new File("objects/" + getSha()));
+        // write.write(treeSha + "\n" + prevCommitSha + "\n" + nextSha + "\n" + author + "\n" + getDate() + "\n" + desc);
+        // write.close();
+        
+        File f = new File("objects/"+getSha());
+        f.createNewFile();
+        PrintWriter pw = new PrintWriter (f);
+        pw.println(treeSha);
+        if (prevCommitSha == null)
+        {
+            pw.println ();
+        }
+        else
+        {
+            pw.println (prevCommitSha);
+        }
+        File a = new File ("objects/"+prevCommitSha);
+        if (a.exists())
+        {
+            int lineNumber = 3;
+            BufferedReader reader = new BufferedReader(new FileReader(a));
+            StringBuilder content = new StringBuilder();
+            String line;
+
+            int currentLine = 1;
+            while ((line = reader.readLine()) != null) {
+                if (currentLine == lineNumber) {
+                    content.append(getSha()).append("\n");
+                }
+                content.append(line).append("\n");
+                currentLine++;
+            }
+            reader.close();
+
+            FileWriter writer = new FileWriter(a);
+            writer.write(content.toString());
+            writer.close();
+            //
+            File input_file = new File("objects/"+prevCommitSha);
+            BufferedReader file_reader = new BufferedReader(new FileReader("objects/"+prevCommitSha));
+            
+            StringBuilder file_content = new StringBuilder();
+            String line1;
+            int line_number = 0;
+            
+            while ((line1 = file_reader.readLine()) != null) {
+                line_number++;
+                if (line_number != 4) {
+                    file_content.append(line1).append("\n");
+                }
+            }
+            file_reader.close();
+            FileWriter file_writer = new FileWriter("objects/"+prevCommitSha);
+            file_writer.write(file_content.toString());
+            file_writer.close();
+        }
+        pw.println();
+        pw.println (author);
+        pw.println (getDate());
+        pw.print (desc);
+        pw.close();
     }
 
     // Gets the sha, this is code from blob.java
@@ -151,6 +253,7 @@ public class Commit {
         Git.initialize();
         Git.addFile("a.txt");
         Commit c = new Commit ("","mark","poo");
+        // c.writeInNewCommit();
         System.out.println(c.getTreeSha());
         System.out.println(c.getTreeSha());
         c.push();
