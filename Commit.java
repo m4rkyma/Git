@@ -237,6 +237,10 @@ public class Commit {
     public String getNextSha() {
         return nextSha;
     }
+    public void setNextSha(String nextSha)
+    {
+        this.nextSha = nextSha;
+    }
     public void makeHead() throws IOException
     {
         File f = new File ("HEAD");

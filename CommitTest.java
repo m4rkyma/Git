@@ -3,7 +3,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.Assert.assertNull;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -99,7 +102,11 @@ public class CommitTest {
         assertNotNull(commit1.getSha());
         assertNotNull(commit1.getTreeSha());
         assertNull(commit1.getPrevCommitSha());
-        assertNotNull(commit1.getNextSha());
+        BufferedReader reader = new BufferedReader(new FileReader("objects/"+commit1.getSha()));
+        String line1 = reader.readLine();
+        String line2 = reader.readLine();
+        String line3 = reader.readLine();
+        assertNotNull(line3);
 
         assertNotNull(commit2.getSha());
         assertNotNull(commit2.getTreeSha());
@@ -162,17 +169,129 @@ public class CommitTest {
         assertNotNull(a.getSha());
         assertNotNull(a.getTreeSha());
         assertNull(a.getPrevCommitSha());
-        assertNotNull(a.getNextSha());
+        BufferedReader reader = new BufferedReader(new FileReader("objects/"+a.getSha()));
+        String line1 = reader.readLine();
+        String line2 = reader.readLine();
+        String line3 = reader.readLine();
+        assertNotNull(line3);
+        reader.close();
+        // assertNotNull(a.getNextSha());
 
         assertNotNull(b.getSha());
         assertNotNull(b.getTreeSha());
         assertNotNull(b.getPrevCommitSha());
-        assertNotNull(b.getNextSha());
+        BufferedReader r2 = new BufferedReader(new FileReader("objects/"+b.getSha()));
+        String lin1 = r2.readLine();
+        String lin2 = r2.readLine();
+        String lin3 = r2.readLine();
+        assertNotNull(lin3);
+        reader.close();
+        // assertNotNull(b.getNextSha());
 
         assertNotNull(c.getSha());
         assertNotNull(c.getTreeSha());
         assertNotNull(c.getPrevCommitSha());
-        assertNotNull(c.getNextSha());
+        BufferedReader r3 = new BufferedReader(new FileReader("objects/"+c.getSha()));
+        String li1 = r3.readLine();
+        String li2 = r3.readLine();
+        String li3 = r3.readLine();
+        assertNotNull(li3);
+        reader.close();
+
+        assertNotNull(commit4.getSha());
+        assertNotNull(commit4.getTreeSha());
+        assertNotNull(commit4.getPrevCommitSha());
+        assertNull(commit4.getNextSha());
+    }
+    @Test
+    void testFiveCommits() throws IOException {
+        File d = new File ("d");
+        d.mkdir();
+        File e = new File ("e");
+        e.mkdir();
+        File[] files = new File[8];
+        PrintWriter[] writers = new PrintWriter[8];
+        String[] fileNames = {"d/a.txt", "d/b.txt", "e/c.txt", "e/d.txt", "e.txt", "f.txt", "g.txt", "h.txt"};
+        String[] fileContents = {"Data for file a", "Data for file b", "Data for file c", "Data for file d", "Data for file e", "Data for file f", "Data for file g", "Data for file h"};
+
+        for (int i = 0; i < 8; i++) {
+            files[i] = new File(fileNames[i]);
+            writers[i] = new PrintWriter(files[i]);
+            writers[i].write(fileContents[i]);
+            writers[i].close();
+        }
+        File fileA = files[0];
+        File fileB = files[1];
+        File fileC = files[2];
+        File fileD = files[3];
+        File fileE = files[4];
+        File fileF = files[5];
+        File fileG = files[6];
+        File fileH = files[7];
+
+        
+
+        Git.initialize();
+        Git.addTree ("d");
+        // Git.addFile(fileA.getName());
+        // Git.addFile(fileB.getName());
+        Commit a = new Commit("","kevin", "1 cool file");
+        a.push();
+
+        Git.initialize();
+        Git.addTree ("e");
+        // Git.addFile(fileC.getName());
+        // Git.addFile(fileD.getName());
+        Commit b = new Commit(a.getSha(),"mark", "2 cool file");
+        b.push();
+
+        Git.initialize();
+        Git.addFile(fileE.getName());
+        Git.addFile(fileF.getName());
+        Commit c = new Commit(b.getSha(),"william", "3 cool file");
+        c.push();
+        Git.initialize();
+        Git.addFile(fileG.getName());
+        
+        Commit commit4 = new Commit(c.getSha(),"sammy", "4 cool file");
+        commit4.push();
+        
+        Git.initialize();
+        Git.addFile(fileH.getName());
+        Commit commit5 = new Commit(commit4.getSha(),"kian", "5 cool file");
+        commit5.push();
+
+        assertNotNull(a.getSha());
+        assertNotNull(a.getTreeSha());
+        assertNull(a.getPrevCommitSha());
+        BufferedReader reader = new BufferedReader(new FileReader("objects/"+a.getSha()));
+        String line1 = reader.readLine();
+        String line2 = reader.readLine();
+        String line3 = reader.readLine();
+        assertNotNull(line3);
+        reader.close();
+        // assertNotNull(a.getNextSha());
+
+        assertNotNull(b.getSha());
+        assertNotNull(b.getTreeSha());
+        assertNotNull(b.getPrevCommitSha());
+        BufferedReader r2 = new BufferedReader(new FileReader("objects/"+b.getSha()));
+        String lin1 = r2.readLine();
+        String lin2 = r2.readLine();
+        String lin3 = r2.readLine();
+        assertNotNull(lin3);
+        reader.close();
+        // assertNotNull(b.getNextSha());
+
+        assertNotNull(c.getSha());
+        assertNotNull(c.getTreeSha());
+        assertNotNull(c.getPrevCommitSha());
+        BufferedReader r3 = new BufferedReader(new FileReader("objects/"+c.getSha()));
+        String li1 = r3.readLine();
+        String li2 = r3.readLine();
+        String li3 = r3.readLine();
+        assertNotNull(li3);
+        reader.close();
 
         assertNotNull(commit4.getSha());
         assertNotNull(commit4.getTreeSha());

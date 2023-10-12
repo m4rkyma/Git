@@ -149,6 +149,8 @@ public class Tree {
             {
                 Tree childTree = new Tree();
                 add ("tree : " + childTree.addDirectory(directoryPath+"/"+fileName) + " : " + fileName);
+                childTree.getContents();
+                childTree.writeToObjects();
             }
         }
         }
@@ -163,34 +165,54 @@ public class Tree {
     public ArrayList<String> getTreeEntries() {
         return treeEntries;
     }
-    // public String searchTree (String tree, String) throws IOException
+
+    public String searchTree (String tree, String target) throws IOException
     {
-        // Tree current = this;
-        // while (current != null)
-        // {
-        //     File f = new File ("HEAD");
-            // BufferedReader fr = new BufferedReader(new FileReader(f));
-        //     String curCommit = fr.readLine();
-
-        // }
-
+        
+        String searchTxt = "";
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(tree))) {
+            String curLine;
+            String treeSha = tree;
+            
+            while ((curLine = br.readLine()) != null) {
+                if (curLine.startsWith("tree")) {
+                    treeSha = curLine.substring(7, 47);
+                    searchTxt += searchTree("objects/" + treeSha, target) + "\n";
+                    return searchTxt;
+                } else if (curLine.substring(curLine.lastIndexOf(":") + 2).equals(target)) {
+                    while ((curLine = br.readLine()) != null) {
+                        searchTxt += curLine + "\n";
+                    }
+                    return searchTxt;
+                } else {
+                    searchTxt += curLine + "\n";
+                }
+            }
+        }
+        
+        System.out.println(searchTxt);
+        return searchTxt;
     }
-    public String delete (String fileName) throws IOException
+    public String delete (String fileName, String tree) throws IOException
     {
         //gets tree of latest commit
-        File f = new File ("HEAD");
-        BufferedReader fr = new BufferedReader(new FileReader(f));
-        String curCommit = fr.readLine();
-        fr.close();
-        File c = new File ("objects/" + curCommit);
-        BufferedReader r = new BufferedReader(new FileReader(c));
-        String s = ("blob : " + "");
-        return (r.readLine());
+        // File f = new File ("HEAD");
+        // BufferedReader fr = new BufferedReader(new FileReader(f));
+        // String curCommit = fr.readLine();
+        // fr.close();
+        // File c = new File ("objects/" + curCommit);
+        // BufferedReader r = new BufferedReader(new FileReader(c));
+        // String s = ("blob : " + "");
+        // return (r.readLine());
+        String delete = searchTree (tree,fileName.substring(fileName.lastIndexOf("/")+1));
+        System.out.println(delete);
+        return delete;
     }
     public static void main(String[] args) throws IOException {
         Tree t= new Tree ();
-        t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
-        // t.addDirectory ("blu2");
+        // t.add("blob : 86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 : b.txt");
+        t.addDirectory ("blu2");
         t.getContents();
         t.writeToObjects();
     }
